@@ -1,26 +1,24 @@
 {
   "extends": "eslint:recommended",
   "env": {
-    "es2022": true,
-    "node": true,
-    "jest": true,
-    "mocha": true
+      "node": true,
+      "es6": true,
+      "jest": true
+  },
+  "parserOptions": {
+      "ecmaVersion": 2017
   },
   "globals": {
-    "SELECT": true,
-    "INSERT": true,
-    "UPSERT": true,
-    "UPDATE": true,
-    "DELETE": true,
-    "CREATE": true,
-    "DROP": true,
-    "CDL": true,
-    "CQL": true,
-    "CXL": true,
-    "cds": true
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true,
+      "DELETE": true,
+      "CREATE": true,
+      "DROP": true,
+      "cds": true
   },
   "rules": {
-    "no-console": "off",
-    "require-atomic-updates": "off"
+      "no-console": "off",
+      "require-atomic-updates": "off"
   }
 }

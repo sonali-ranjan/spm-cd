@@ -1,1 +1,16 @@
-{}
+{
+  "odata": {
+    "flavor": "x4"
+  },
+  "requires": {
+    "CommissionsApi": {
+      "kind": "rest",
+      "impl": "srv/external/CommissionsApi.js",
+      "credentials": {
+        "url": "https://1270.callidusondemand.com/api/v2/",
+        "username": "FSA_ADMIN",
+        "password": "=Ym)TLx%5WzYwkS!"
+      }
+    }
+  }
+}

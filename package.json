@@ -6,13 +6,20 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": "^6",
+    "@sap/cds": "^4",
     "express": "^4"
   },
   "devDependencies": {
+    "@sap/ux-specification": "^1.108.3",
     "sqlite3": "^5"
   },
   "scripts": {
-    "start": "cds-serve"
-  }
+    "start": "cds run",
+    "watch-app": "cds watch --open app/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-spm-cd": "cds watch --open spm-cd/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "sapux": [
+    "app/app",
+    "app/spm-cd"
+  ]
 }
