@@ -21,5 +21,24 @@
   "sapux": [
     "app/app",
     "app/spm-cd"
-  ]
+  ],
+  "cds": {
+    "requires": {
+      "API_BUSINESS_PARTNER": {
+        "kind": "odata",
+        "model": "srv/external/API_BUSINESS_PARTNER",
+        "csrf": true,
+        "csrfInBatch": true
+      },
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "database": ":memory:"
+        }
+      }
+    },
+    "features": {
+      "in_memory_db": true
+    }
+  }
 }

@@ -1,6 +1,6 @@
-import { RemoteService } from "@sap/cds";
+const cds = require("@sap/cds");
 
-class CommissionsApi extends RemoteService {
+class CommissionsApi extends cds.RemoteService {
   async init() {
     this.reject(["CREATE", "UPDATE", "DELETE"], "*");
 
@@ -23,8 +23,8 @@ class CommissionsApi extends RemoteService {
 function parseResponse(response) {
   return {
     orderId: response.salesOrderSeq,
-    name: response.orderId    
+    name: response.orderId
   };
 }
 
-export default CommissionsApi;
+module.exports = CommissionsApi;

@@ -1,3 +1,6 @@
 namespace db;
 
-entity SalesOrder { orderId : Integer; name    : String(111);}
+entity SalesOrders {
+    key orderId : Integer;
+    name    : String(111);
+}

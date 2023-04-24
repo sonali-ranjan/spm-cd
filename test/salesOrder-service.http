@@ -1,0 +1,13 @@
+GET http://localhost:4004/sales-order/getRandomSalesOrder()
+
+###
+
+GET http://localhost:4004/sales-order/SalesOrders
+
+###
+
+GET http://localhost:4004/sales-order/SalesOrders(14355223812243766)
+
+###
+
+GET http://localhost:4004/sales-order/$metadata
