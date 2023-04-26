@@ -1,8 +1,8 @@
 namespace db2;
 
-entity Payment {
+entity Payments {
     key PaymentSeq     : Integer;
-        name           : String(111);
+        // name           : String(111);
         EarningGroupId : String(20);
         EarningCodeId  : String(20);
         Value          : Association to Value;

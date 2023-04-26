@@ -25,7 +25,7 @@
       "kind": "odata",
       "impl": "srv/external/CommissionsOdataApi.js",
       "credentials": {
-        "url": "https://1270.callidusondemand.com/TrueComp-SaaS/CommissionsService.svc/",
+        "url": "https://1270.callidusondemand.com/TrueComp-SaaS/CommissionsService.svc",
         "username": "FSA_ADMIN",
         "password": "=Ym)TLx%5WzYwkS!"
       }

@@ -7,7 +7,7 @@ class CommissionsOdataApi extends cds.RemoteService {
     this.before("READ", "*", (req) => {
       try {
          //req.query = `GET /salesOrders(14355223812244865)`;
-        req.query = `GET /Payments`;
+        // req.query = `GET /Payments`;
       } catch (error) {
         req.reject(400, error.message);
       }

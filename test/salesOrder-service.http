@@ -10,7 +10,7 @@ GET http://localhost:4004/sales-order/payments
 
 ###
 
-GET http://localhost:4004/sales-order/Payment
+GET http://localhost:4004/sales-order/Payments
 
 ###
 

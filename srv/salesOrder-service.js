@@ -13,7 +13,7 @@ module.exports = cds.service.impl(function () {
 
   const { Payment } = this.entities;
 
-  this.on("READ", Payment, async (req) => {
+  this.on("READ", 'Payments', async (req) => {
     console.log(req);
     const CommissionsOdataApi = await cds.connect.to("CommissionsOdataApi");
     return CommissionsOdataApi.tx(req).run(req.query);
@@ -21,10 +21,10 @@ module.exports = cds.service.impl(function () {
 
   const { payments } = this.entities;
 
-  this.on("READ", payments, async (req) => {
-    const CommissionsPaymentApi = await cds.connect.to("CommissionsPaymentApi");
-    return CommissionsPaymentApi.tx(req).run(req.query);
-  });
+  // this.on("READ", payments, async (req) => {
+  //   const CommissionsPaymentApi = await cds.connect.to("CommissionsPaymentApi");
+  //   return CommissionsPaymentApi.tx(req).run(req.query);
+  // });
 
   this.on("getRandomSalesOrder", async (req) => {
     const CommissionsApi = await cds.connect.to("CommissionsApi");
@@ -57,10 +57,15 @@ module.exports = cds.service.impl(function () {
     req.entity = 'srv.SalesOrderService.SalesOrders';
     console.log(req);
 
-    const CommissionsApi = await cds.connect.to("CommissionsApi");
-    return CommissionsApi.tx(req).run(req.query);
+    const CommissionsOdataApi = await cds.connect.to("CommissionsOdataApi");
+    let test1 = await CommissionsOdataApi.read('Payments').limit(1)
+
+
     
-    console.log(CommissionsApi.read("Payment"));
+    const test = await CommissionsOdataApi.tx(req).run(req.query)
+    return test;
+    
+    console.log(CommissionsOdataApi.read("Payment"));
     console.log("read SC fn");
     //console.log(response);
     console.log(req);
