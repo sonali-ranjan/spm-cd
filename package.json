@@ -37,8 +37,19 @@
         }
       }
     },
+    "requires": {
+      "UserRead": {
+        "kind": "SOAP",
+        "credentials": {
+          "destination": "ST1_200",
+          "path": "/sap/bc/srt/wsdl/flv_10002A111AD1/bndg_url/sap/bc/srt/rfc/sap/ziscd_scpos_maintain/200/zservice_iscd_scpos_maintain/zbind_iscd_scpos"
+        }
+      }
+    },
     "features": {
       "in_memory_db": true
     }
   }
 }
+    
+
