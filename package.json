@@ -18,10 +18,6 @@
     "watch-app": "cds watch --open app/webapp/index.html?sap-ui-xx-viewCache=false",
     "watch-spm-cd": "cds watch --open spm-cd/webapp/index.html?sap-ui-xx-viewCache=false"
   },
-  "sapux": [
-    "app/app",
-    "app/spm-cd"
-  ],
   "cds": {
     "requires": {
       "API_BUSINESS_PARTNER": {
@@ -49,7 +45,10 @@
     "features": {
       "in_memory_db": true
     }
-  }
+  },
+  "sapux": [
+    "app/spm-cd"
+  ]
 }
     
 

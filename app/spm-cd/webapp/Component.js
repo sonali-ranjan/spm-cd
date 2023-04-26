@@ -1,9 +1,9 @@
 sap.ui.define(
-    ["sap/ovp/app/Component"],
+    ["sap/fe/core/AppComponent"],
     function (Component) {
         "use strict";
 
-        return Component.extend("spmcd.Component", {
+        return Component.extend("msg.spmcd.Component", {
             metadata: {
                 manifest: "json"
             }

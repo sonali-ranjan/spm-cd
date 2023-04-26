@@ -1,22 +1,22 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Thu Apr 20 2023 13:17:06 GMT+0000 (Coordinated Universal Time)|
+|**Generation Date and Time**<br>Tue Apr 25 2023 10:38:51 GMT+0000 (Coordinated Universal Time)|
 |**App Generator**<br>@sap/generator-fiori-elements|
 |**App Generator Version**<br>1.9.4|
 |**Generation Platform**<br>SAP Business Application Studio|
-|**Template Used**<br>Overview Page V4|
+|**Template Used**<br>List Report Page V4|
 |**Service Type**<br>Local Cap|
 |**Service URL**<br>http://localhost:4004/sales-order/
 |**Module Name**<br>spm-cd|
 |**Application Title**<br>App Title|
-|**Namespace**<br>|
-|**UI5 Theme**<br>sap_horizon|
+|**Namespace**<br>msg|
+|**UI5 Theme**<br>sap_belize|
 |**UI5 Version**<br>1.113.0|
 |**Enable Code Assist Libraries**<br>False|
 |**Enable TypeScript**<br>False|
 |**Add Eslint configuration**<br>False|
-|**FilterEntity Type**<br>CurrentSalesOrder|
+|**Main Entity**<br>Payment|
 
 ## spm-cd
 

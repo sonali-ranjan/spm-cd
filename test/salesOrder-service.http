@@ -6,8 +6,20 @@ GET http://localhost:4004/sales-order/SalesOrders
 
 ###
 
+GET http://localhost:4004/sales-order/payments
+
+###
+
+GET http://localhost:4004/sales-order/Payment
+
+###
+
 GET http://localhost:4004/sales-order/SalesOrders(14355223812243766)
 
 ###
 
 GET http://localhost:4004/sales-order/$metadata
+
+###
+
+GET http://localhost:4004/sales-order/sendPayment()

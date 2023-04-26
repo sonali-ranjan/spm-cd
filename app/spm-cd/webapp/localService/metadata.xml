@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
-    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
-        <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
-    </edmx:Reference>
     <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
         <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
     </edmx:Reference>
@@ -12,32 +9,47 @@
     <edmx:DataServices>
         <Schema Namespace="srv.SalesOrderService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
             <EntityContainer Name="EntityContainer">
-                <EntitySet Name="CurrentSalesOrder" EntityType="srv.SalesOrderService.CurrentSalesOrder"/>
+                <EntitySet Name="SalesOrders" EntityType="srv.SalesOrderService.SalesOrders"/>
+                <EntitySet Name="Payment" EntityType="srv.SalesOrderService.Payment"/>
+                <EntitySet Name="payments" EntityType="srv.SalesOrderService.payments"/>
+                <FunctionImport Name="getRandomSalesOrder" Function="srv.SalesOrderService.getRandomSalesOrder" EntitySet="SalesOrders"/>
+                <FunctionImport Name="sendPayment" Function="srv.SalesOrderService.sendPayment"/>
             </EntityContainer>
-            <EntityType Name="CurrentSalesOrder">
-                <Property Name="orderId" Type="Edm.Int32"/>
+            <EntityType Name="SalesOrders">
+                <Key>
+                    <PropertyRef Name="orderId"/>
+                </Key>
+                <Property Name="orderId" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="name" Type="Edm.String" MaxLength="111"/>
+                <Property Name="businessUnits_businessUnitSeq" Type="Edm.Int32"/>
+                <Property Name="businessUnits_name" Type="Edm.String" MaxLength="10"/>
             </EntityType>
-            <Annotations Target="srv.SalesOrderService.EntityContainer">
-                <Annotation Term="Capabilities.KeyAsSegmentSupported" Bool="true"/>
-            </Annotations>
-            <Annotations Target="srv.SalesOrderService.EntityContainer/CurrentSalesOrder">
-                <Annotation Term="Capabilities.DeleteRestrictions">
-                    <Record Type="Capabilities.DeleteRestrictionsType">
-                        <PropertyValue Property="Deletable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.InsertRestrictions">
-                    <Record Type="Capabilities.InsertRestrictionsType">
-                        <PropertyValue Property="Insertable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.UpdateRestrictions">
-                    <Record Type="Capabilities.UpdateRestrictionsType">
-                        <PropertyValue Property="Updatable" Bool="false"/>
-                    </Record>
-                </Annotation>
-            </Annotations>
+            <EntityType Name="Payment">
+                <Key>
+                    <PropertyRef Name="PaymentSeq"/>
+                </Key>
+                <Property Name="PaymentSeq" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="111"/>
+                <Property Name="EarningGroupId" Type="Edm.String" MaxLength="20"/>
+                <Property Name="EarningCodeId" Type="Edm.String" MaxLength="20"/>
+                <Property Name="Value_UnitType" Type="Edm.String" MaxLength="10"/>
+                <Property Name="Value_Value" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="payments">
+                <Key>
+                    <PropertyRef Name="orderId"/>
+                </Key>
+                <Property Name="orderId" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="111"/>
+                <Property Name="businessUnits_businessUnitSeq" Type="Edm.Int32"/>
+                <Property Name="businessUnits_name" Type="Edm.String" MaxLength="10"/>
+            </EntityType>
+            <Function Name="getRandomSalesOrder" IsBound="false" IsComposable="false">
+                <ReturnType Type="srv.SalesOrderService.SalesOrders"/>
+            </Function>
+            <Function Name="sendPayment" IsBound="false" IsComposable="false">
+                <ReturnType Type="Edm.Boolean"/>
+            </Function>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>
