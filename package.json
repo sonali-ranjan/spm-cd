@@ -6,8 +6,11 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@sap-cloud-sdk/connectivity": "^3.1.1",
+    "@sap-cloud-sdk/http-client": "^3.1.1",
     "@sap/cds": "^4",
-    "express": "^4"
+    "express": "^4",
+    "soap": "^1.0.0"
   },
   "devDependencies": {
     "@sap/ux-specification": "^1.108.3",
@@ -19,20 +22,6 @@
     "watch-spm-cd": "cds watch --open spm-cd/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
-    "requires": {
-      "API_BUSINESS_PARTNER": {
-        "kind": "odata",
-        "model": "srv/external/API_BUSINESS_PARTNER",
-        "csrf": true,
-        "csrfInBatch": true
-      },
-      "db": {
-        "kind": "sqlite",
-        "credentials": {
-          "database": ":memory:"
-        }
-      }
-    },
     "requires": {
       "UserRead": {
         "kind": "SOAP",
@@ -47,5 +36,3 @@
     }
   }
 }
-    
-

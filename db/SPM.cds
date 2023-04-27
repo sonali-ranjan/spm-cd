@@ -40,3 +40,28 @@ entity FinalPayments {
         PositionSeq : Integer; //"US1005-P1";
         Tenant       : String(4) default '1270';
 }
+entity Cd_customizing {
+  key id                 : Integer;
+      Mapping_type       : String;
+      BTP_ATTRIBUTE      : String;
+      Source             : String;
+      Target             : String;
+      Source_data_type   : String;
+      CD_Object          : String;
+      DATA_TYPE          : String;
+      Length             : Integer;
+      DATA_CONV_REQUIRED : String;
+      SHORT_DESC         : String
+}
+entity Cd_Local_Mapping {
+  key id                : Integer;
+      Tenant_Id         : String;
+      Commission_EG     : String;
+      Commission_EC     : String;
+      Main_transaction  : String;
+      Sub_transaction   : String;
+      Document_Type     : String;
+      Document_Category : String;
+      Company_Code      : String
+
+}
