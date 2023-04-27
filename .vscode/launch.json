@@ -13,7 +13,6 @@
       ],
       "type": "node"
     },
-
     {
       "command": "cds serve --with-mocks --in-memory?",
       "name": "cds serve",

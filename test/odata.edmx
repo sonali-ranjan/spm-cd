@@ -1,0 +1,285 @@
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="base" Alias="base">
+            <EntityType Name="Calendar">
+                <Key>
+                    <PropertyRef Name="CalendarSeq"/>
+                </Key>
+                <Property Name="CalendarSeq" Type="Edm.Int64"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="100"/>
+                <Property Name="MinorPeriodType" Type="Edm.String" Nullable="false"/>
+                <Property Name="MajorPeriodType" Type="Edm.String" Nullable="false"/>
+                <Property Name="CreateDate" Type="Edm.DateTimeOffset" Precision="9"/>
+            </EntityType>
+            <EntityType Name="Period">
+                <Key>
+                    <PropertyRef Name="PeriodSeq"/>
+                </Key>
+                <Property Name="Finalized" Type="Edm.Boolean"/>
+                <Property Name="PeriodSeq" Type="Edm.Int64"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="ShortName" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="255"/>
+                <Property Name="StartDate" Type="Edm.Date" Nullable="false"/>
+                <Property Name="EndDate" Type="Edm.Date" Nullable="false"/>
+                <Property Name="PeriodType" Type="Edm.String" Nullable="false"/>
+                <Property Name="CreateDate" Type="Edm.DateTimeOffset" Precision="9"/>
+                <NavigationProperty Name="Calendar" Type="base.Calendar" Nullable="false"/>
+            </EntityType>
+            <ComplexType Name="Value">
+                <Property Name="UnitType" Type="Edm.String" Nullable="false"/>
+                <Property Name="Value" Type="Edm.Decimal" Nullable="false" Scale="15"/>
+            </ComplexType>
+            <ComplexType Name="Currency">
+                <Property Name="UnitType" Type="Edm.String" Nullable="false"/>
+                <Property Name="Value" Type="Edm.Decimal" Nullable="false" Scale="15"/>
+            </ComplexType>
+            <EntityContainer Name="Container">
+                <EntitySet Name="Calendars" EntityType="base.Calendar"/>
+                <EntitySet Name="Periods" EntityType="base.Period">
+                    <NavigationPropertyBinding Path="Calendar" Target="Calendars"/>
+                </EntitySet>
+            </EntityContainer>
+        </Schema>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="plan" Alias="plan">
+            <EntityType Name="RuleElementOwner" Abstract="true">
+                <Key>
+                    <PropertyRef Name="RuleElementOwnerSeq"/>
+                </Key>
+                <Property Name="RuleElementOwnerSeq" Type="Edm.Int64"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="255"/>
+                <Property Name="BusinessUnits" Type="Collection(Edm.String)"/>
+                <Property Name="CreateDate" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="EffectiveStartDate" Type="Edm.Date" Nullable="false"/>
+                <Property Name="EffectiveEndDate" Type="Edm.Date"/>
+                <NavigationProperty Name="Versions" Type="Collection(plan.RuleElementOwner)"/>
+            </EntityType>
+            <EntityType Name="PlanAssignable" BaseType="plan.RuleElementOwner" Abstract="true">
+                <NavigationProperty Name="Plan" Type="plan.Plan"/>
+            </EntityType>
+            <EntityType Name="Plan" BaseType="plan.RuleElementOwner">
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <NavigationProperty Name="Assignables" Type="Collection(plan.PlanAssignable)"/>
+            </EntityType>
+            <EntityContainer Name="Container">
+                <EntitySet Name="Plans" EntityType="plan.Plan">
+                    <NavigationPropertyBinding Path="Assignables" Target="PlanAssignables"/>
+                </EntitySet>
+            </EntityContainer>
+        </Schema>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="org" Alias="org">
+            <EntityType Name="Participant">
+                <Key>
+                    <PropertyRef Name="PayeeSeq"/>
+                </Key>
+                <Property Name="PayeeSeq" Type="Edm.Int64"/>
+                <Property Name="PayeeId" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="BusinessUnits" Type="Collection(Edm.String)"/>
+                <Property Name="CreateDate" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="EffectiveStartDate" Type="Edm.Date" Nullable="false"/>
+                <Property Name="EffectiveEndDate" Type="Edm.Date"/>
+                <Property Name="Prefix" Type="Edm.String" MaxLength="20"/>
+                <Property Name="FirstName" Type="Edm.String" MaxLength="90"/>
+                <Property Name="MiddleName" Type="Edm.String" MaxLength="90"/>
+                <Property Name="LastName" Type="Edm.String" Nullable="false" MaxLength="90"/>
+                <Property Name="Suffix" Type="Edm.String" MaxLength="20"/>
+                <Property Name="TaxId" Type="Edm.String" MaxLength="15"/>
+                <Property Name="Salary" Type="base.Currency"/>
+                <Property Name="HireDate" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="TerminationDate" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="UserId" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ParticipantEmail" Type="Edm.String" MaxLength="100"/>
+                <Property Name="PreferredLanguage" Type="Edm.String" MaxLength="7"/>
+                <Property Name="EventCalendar" Type="Edm.Geography"/>
+                <Property Name="GenericAttribute1" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="Versions" Type="Collection(org.Participant)"/>
+                <NavigationProperty Name="Positions" Type="Collection(org.Position)"/>
+            </EntityType>
+            <EntityType Name="Title" BaseType="plan.PlanAssignable">
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="127"/>
+                <NavigationProperty Name="Positions" Type="Collection(org.Position)"/>
+            </EntityType>
+            <EntityType Name="Position" BaseType="plan.PlanAssignable">
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="127"/>
+                <Property Name="TargetCompensation" Type="base.Currency"/>
+                <Property Name="CreditStartDate" Type="Edm.Date"/>
+                <Property Name="CreditEndDate" Type="Edm.Date"/>
+                <Property Name="ProcessingStartDate" Type="Edm.Date"/>
+                <Property Name="ProcessingEndDate" Type="Edm.Date"/>
+                <Property Name="GenericAttribute1" Type="Edm.String" MaxLength="255"/>
+                <Property Name="GenericAttribute2" Type="Edm.String" MaxLength="255"/>
+                <Property Name="GenericAttribute3" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="Title" Type="org.Title" Nullable="false" Partner="Positions"/>
+                <NavigationProperty Name="Manager" Type="org.Position"/>
+                <NavigationProperty Name="Payee" Type="org.Participant" Partner="Positions"/>
+                <NavigationProperty Name="Subordinates" Type="Collection(org.Position)"/>
+                <NavigationProperty Name="ParentPositionRelations" Type="Collection(org.PositionRelation)"/>
+                <NavigationProperty Name="ChildPositionRelations" Type="Collection(org.PositionRelation)"/>
+            </EntityType>
+            <EntityType Name="PositionRelation">
+                <Key>
+                    <PropertyRef Name="PositionRelationSeq"/>
+                </Key>
+                <Property Name="PositionRelationSeq" Type="Edm.Int64"/>
+                <Property Name="PositionRelationType" Type="Edm.String" Nullable="false"/>
+                <Property Name="CreateDate" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="EffectiveStartDate" Type="Edm.Date" Nullable="false"/>
+                <Property Name="EffectiveEndDate" Type="Edm.Date"/>
+                <NavigationProperty Name="Versions" Type="Collection(org.PositionRelation)"/>
+                <NavigationProperty Name="ChildPosition" Type="org.Position" Nullable="false"/>
+                <NavigationProperty Name="ParentPosition" Type="org.Position" Nullable="false"/>
+            </EntityType>
+            <EntityContainer Name="Container">
+                <EntitySet Name="Participants" EntityType="org.Participant">
+                    <NavigationPropertyBinding Path="Positions" Target="Positions"/>
+                </EntitySet>
+                <EntitySet Name="Titles" EntityType="org.Title">
+                    <NavigationPropertyBinding Path="Positions" Target="Positions"/>
+                </EntitySet>
+                <EntitySet Name="Positions" EntityType="org.Position">
+                    <NavigationPropertyBinding Path="Title" Target="Titles"/>
+                    <NavigationPropertyBinding Path="Manager" Target="Positions"/>
+                    <NavigationPropertyBinding Path="Payee" Target="Participants"/>
+                    <NavigationPropertyBinding Path="Subordinates" Target="Positions"/>
+                    <NavigationPropertyBinding Path="ParentPositionRelations" Target="PositionRelations"/>
+                    <NavigationPropertyBinding Path="ChildPositionRelations" Target="PositionRelations"/>
+                </EntitySet>
+                <EntitySet Name="PositionRelations" EntityType="org.PositionRelation">
+                    <NavigationPropertyBinding Path="ChildPosition" Target="Positions"/>
+                    <NavigationPropertyBinding Path="ParentPosition" Target="Positions"/>
+                </EntitySet>
+            </EntityContainer>
+        </Schema>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="result" Alias="result">
+            <EntityType Name="Payment">
+                <Key>
+                    <PropertyRef Name="PaymentSeq"/>
+                </Key>
+                <Property Name="PaymentSeq" Type="Edm.Int64"/>
+                <Property Name="Reason" Type="Edm.String"/>
+                <Property Name="EarningGroupId" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="EarningCodeId" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="TrialPipelineRunDate" Type="Edm.DateTimeOffset" Nullable="false" Precision="9"/>
+                <Property Name="PostPipelineRunDate" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="Value" Type="base.Value"/>
+                <Property Name="ProcessingUnit" Type="Edm.String"/>
+                <Property Name="GenericAttribute1" Type="Edm.String" MaxLength="255"/>
+                <Property Name="GenericAttribute2" Type="Edm.String" MaxLength="255"/>
+                <Property Name="GenericAttribute3" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="Payee" Type="org.Participant" Nullable="false"/>
+                <NavigationProperty Name="Position" Type="org.Position" Nullable="false"/>
+                <NavigationProperty Name="Period" Type="base.Period" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="PaymentSummary">
+                <Key>
+                    <PropertyRef Name="PaymentSummarySeq"/>
+                </Key>
+                <Property Name="PaymentSummarySeq" Type="Edm.Int64"/>
+                <Property Name="EarningGroupId" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="PriorBalance" Type="base.Value"/>
+                <Property Name="AppliedDeposit" Type="base.Value"/>
+                <Property Name="Payment" Type="base.Value"/>
+                <Property Name="Balance" Type="base.Value"/>
+                <Property Name="ProcessingUnit" Type="Edm.String"/>
+                <Property Name="OutstandingBalance" Type="base.Value"/>
+                <Property Name="BusinessUnits" Type="Collection(Edm.String)"/>
+                <NavigationProperty Name="Participant" Type="org.Participant" Nullable="false"/>
+                <NavigationProperty Name="Position" Type="org.Position" Nullable="false"/>
+                <NavigationProperty Name="Period" Type="base.Period" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="PipelineRun">
+                <Key>
+                    <PropertyRef Name="PipelineRunSeq"/>
+                </Key>
+                <Property Name="PipelineRunSeq" Type="Edm.Int64"/>
+                <Property Name="StartTime" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="StageType" Type="Edm.String"/>
+                <Property Name="Status" Type="Edm.String" MaxLength="20"/>
+                <Property Name="StopTime" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="ProcessingUnit" Type="Edm.String"/>
+                <Property Name="RunMode" Type="Edm.String" MaxLength="30"/>
+                <Property Name="Command" Type="Edm.String" MaxLength="127"/>
+                <Property Name="State" Type="Edm.String" MaxLength="20"/>
+                <Property Name="DateSubmitted" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="UserId" Type="Edm.String" MaxLength="255"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="255"/>
+                <Property Name="TraceLevel" Type="Edm.String" MaxLength="30"/>
+                <Property Name="GroupName" Type="Edm.String" MaxLength="255"/>
+                <Property Name="Priority" Type="Edm.Int64"/>
+                <Property Name="IsolationLevel" Type="Edm.String" MaxLength="20"/>
+                <Property Name="NumErrors" Type="Edm.Int64"/>
+                <Property Name="NumWarnings" Type="Edm.Int64"/>
+                <Property Name="Message" Type="Edm.String" MaxLength="4000"/>
+                <Property Name="TargetDatabase" Type="Edm.String" MaxLength="40"/>
+                <Property Name="ProductVersion" Type="Edm.String" MaxLength="30"/>
+                <Property Name="SchemaVersion" Type="Edm.String" MaxLength="30"/>
+                <Property Name="StoredProcVersion" Type="Edm.String" MaxLength="30"/>
+                <Property Name="StageTables" Type="Collection(Edm.String)"/>
+                <Property Name="ImportedRefeferenceData" Type="Collection(Edm.String)" MaxLength="100"/>
+                <Property Name="DeferredReset" Type="Edm.Boolean"/>
+                <Property Name="SkipAnalyzeSchema" Type="Edm.Boolean"/>
+                <Property Name="Module" Type="Edm.String" MaxLength="100"/>
+                <Property Name="BatchName" Type="Edm.String" MaxLength="90"/>
+                <Property Name="PositionGroups" Type="Collection(Edm.String)"/>
+                <Property Name="SqlLogging" Type="Edm.Boolean"/>
+                <Property Name="RunProgress" Type="Edm.String" MaxLength="20"/>
+                <Property Name="StartDateScheduled" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="EndDateScheduled" Type="Edm.DateTimeOffset" Precision="9"/>
+                <Property Name="ScheduleDay" Type="Edm.String" MaxLength="20"/>
+                <Property Name="ScheduleFrequency" Type="Edm.String" MaxLength="30"/>
+                <Property Name="XmlImportOverwrite" Type="Edm.Boolean"/>
+                <Property Name="CalendarName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="GenerateODSReports" Type="Edm.Boolean"/>
+                <Property Name="Revalidate" Type="Edm.String" MaxLength="100"/>
+                <Property Name="RunETL" Type="Edm.Boolean"/>
+                <Property Name="DebugContext" Type="Edm.String" MaxLength="100"/>
+                <Property Name="OdsReportList" Type="Collection(Edm.String)" MaxLength="100"/>
+                <Property Name="ModelSeq" Type="Edm.Int64"/>
+                <Property Name="BoGroupsList" Type="Collection(Edm.String)" MaxLength="100"/>
+                <Property Name="ReportFormatsList" Type="Collection(Edm.Int32)"/>
+                <Property Name="IsMergePDF" Type="Edm.Boolean"/>
+                <Property Name="MergedPDFFileName" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ReportTypeName" Type="Edm.String" MaxLength="30"/>
+                <Property Name="RemoveStaleResults" Type="Edm.Boolean"/>
+                <Property Name="OnDemand" Type="Edm.Boolean"/>
+                <Property Name="RunDataExtracts" Type="Edm.Boolean"/>
+                <Property Name="DataExtractsFileType" Type="Edm.String" MaxLength="255"/>
+                <Property Name="AllReportsAndGroups" Type="Edm.Boolean"/>
+                <Property Name="XmlFileContentString" Type="Edm.String" MaxLength="10000"/>
+                <Property Name="XmlFileName" Type="Edm.String" MaxLength="255"/>
+                <Property Name="PeriodName" Type="Edm.String" MaxLength="50"/>
+                <Property Name="OdsReportNames" Type="Edm.String" MaxLength="2048"/>
+                <Property Name="BoGroupNames" Type="Edm.String" MaxLength="2048"/>
+                <Property Name="ReportFormatTypes" Type="Edm.String" MaxLength="50"/>
+                <Property Name="PositionGroupSeqs" Type="Edm.String" MaxLength="1200"/>
+                <Property Name="PositionSeqs" Type="Edm.String" MaxLength="1200"/>
+                <Property Name="StageTableNames" Type="Edm.String" MaxLength="1200"/>
+                <Property Name="ShouldGenerateOdsReport" Type="Edm.String" MaxLength="5"/>
+                <Property Name="ShouldRunDataExtracts" Type="Edm.String" MaxLength="5"/>
+                <Property Name="ShouldSkipAnalyzeSchema" Type="Edm.String" MaxLength="5"/>
+                <Property Name="ShouldMergePdf" Type="Edm.String" MaxLength="5"/>
+                <Property Name="ShouldRemoveStaleResults" Type="Edm.String" MaxLength="5"/>
+                <Property Name="ShouldOnDemand" Type="Edm.String" MaxLength="5"/>
+                <NavigationProperty Name="Period" Type="base.Period"/>
+                <NavigationProperty Name="Positions" Type="Collection(org.Position)"/>
+            </EntityType>
+            <EntityContainer Name="Container">
+                <EntitySet Name="Payments" EntityType="result.Payment">
+                    <NavigationPropertyBinding Path="Payee" Target="Participants"/>
+                    <NavigationPropertyBinding Path="Position" Target="Positions"/>
+                    <NavigationPropertyBinding Path="Period" Target="Periods"/>
+                </EntitySet>
+                <EntitySet Name="PaymentSummaries" EntityType="result.PaymentSummary">
+                    <NavigationPropertyBinding Path="Participant" Target="Participants"/>
+                    <NavigationPropertyBinding Path="Position" Target="Positions"/>
+                    <NavigationPropertyBinding Path="Period" Target="Periods"/>
+                </EntitySet>
+                <EntitySet Name="PipelineRuns" EntityType="result.PipelineRun">
+                    <NavigationPropertyBinding Path="Period" Target="Periods"/>
+                    <NavigationPropertyBinding Path="Positions" Target="Positions"/>
+                </EntitySet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

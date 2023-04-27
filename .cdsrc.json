@@ -7,15 +7,6 @@
       "kind": "rest",
       "impl": "srv/external/CommissionsApi.js",
       "credentials": {
-        "url": "https://1270.callidusondemand.com/api/v2/",
-        "username": "FSA_ADMIN",
-        "password": "=Ym)TLx%5WzYwkS!"
-      }
-    },
-    "CommissionsPaymentApi": {
-      "kind": "rest",
-      "impl": "srv/external/CommissionsPaymentApi.js",
-      "credentials": {
         "url": "https://1270.callidusondemand.com/api/v2",
         "username": "FSA_ADMIN",
         "password": "=Ym)TLx%5WzYwkS!"
