@@ -1,19 +1,27 @@
 ###
 
-GET http://localhost:4004/spm/payments
-
-###
-
-GET http://localhost:4004/sales-order/Payments
-
-###Do not work
-
-GET http://localhost:4004/spm/salesOrders(14355223812243766)
-
-###
-
 GET http://localhost:4004/spm/$metadata
 
 ###
 
 GET http://localhost:4004/spm/sendPayment()
+
+###
+
+GET http://localhost:4004/spm/FinalPayments
+
+###
+
+POST http://localhost:4004/spm/FinalPayments
+Content-Type: application/json
+
+{
+ "PaymentSeq"   : 102,
+        "EarningGroup" : "Bonus",
+        "EarningCode"  : "Bonus",
+        "Currency"    : "USD",
+        "Amount"       : 500,
+        "PayeeSeq"     : 501,
+        "PostingDate"  : "2020-05-31",
+        "PositionSeq"  : 601,
+        "Tenant"      : "1270"}

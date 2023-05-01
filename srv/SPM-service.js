@@ -2,7 +2,7 @@ const cds = require("@sap/cds");
 
 module.exports = cds.service.impl(function () {
   const { SalesOrders } = this.entities;
-
+  const { FinalPayments } = this.entities;
   this.on("READ", SalesOrders, async (req) => {
     console.log("BeGN");
     console.log(req);
@@ -10,13 +10,15 @@ module.exports = cds.service.impl(function () {
     return CommissionsApi.tx(req).run(req.query);
 
   });
-  const { FinalPayments } = this.entities;
+  // const { FinalPayments } = this.entities;
 
-  this.on("READ", FinalPayments, async (req) => {
+  // this.on("READ", FinalPayments, async (req) => {
 
-  console.log("test final payment");
+  //   console.log("test final payment");
 
-  });
+  //   console.log(SELECT.from(FinalPayments));
+
+  // });
   // const { Payment } = this.entities;
 
   // this.on("READ", 'Payments', async (req) => {
@@ -28,8 +30,6 @@ module.exports = cds.service.impl(function () {
   this.on("sendPayment", async (req) => {
 
     //  Get Payments List
-    //  Get Payment by ID
-    //  Get Period Details
     //  Read Participant details
     //  Read Position details
     //  Read Customizing mapping tables
@@ -45,33 +45,39 @@ module.exports = cds.service.impl(function () {
   });
   async function readSAPCommissionPayments(req) {
     const CommissionsOdataApi = await cds.connect.to("CommissionsOdataApi");
-    // ?$expand=Position,Payee,Period';
-    //CommissionsOdataApi.
-    let res = await CommissionsOdataApi.read('Payments').limit(1) //having('?$expand=Position,Payee,Period').limit(10)
+
+    let res = await CommissionsOdataApi.read('Payments').limit(1)
 
     res.forEach(element => {
-      // console.log(element);
 
-      console.log(element.PaymentSeq);
-      console.log(element.EarningGroupId);
-      console.log(element.EarningCodeId);
-      console.log(element.Value.UnitType);
-      console.log(element.Value.Value);
+      console.clear();
+      console.log("Data for Payment to CD\n");
+      console.log("Payment Seq      : ", element.PaymentSeq);
+      console.log("Earning Group ID : ", element.EarningGroupId);
+      console.log("Earning Code Id  : ", element.EarningCodeId);
+      console.log("Payment Amount   : ", element.Value.Value, element.Value.UnitType);
+      console.log("Payee ID         : ", element.Payee.PayeeId);
+      console.log("Payee Seq        : ", element.Payee.PayeeSeq);
+      console.log("Payment Date     : ", element.Period.EndDate);
+      console.log("Position Name    : ", element.Position.Name);
+      console.log("Position Seq     : ", element.Position.RuleElementOwnerSeq);
 
-      // PayeeId: 
-      console.log(element.Payee.PayeeId);
-      console.log(element.Payee.PayeeSeq);
-      // EndDate: 
-      console.log(element.Period.EndDate);
-      // Name: 
-      console.log(element.Position.Name);
-      console.log(element.RuleElementOwnerSeq);
-      //write this to a local entity/table in db
+      cds.run(INSERT.into(FinalPayments).entries(
+        {
+          PaymentSeq: element.PaymentSeq,
+          EarningGroup: element.EarningGroupId,
+          EarningCode: element.EarningCodeId,
+          Currency: element.Value.UnitType,
+          Amount: element.Value.Value,
+          PayeeSeq: element.Payee.PayeeSeq,
+          PostingDate: element.Period.EndDate,
+          PositionSeq: element.Position.RuleElementOwnerSeq,
+          Tenant: "1270"
+        }
+      ));
 
-    });
-    return res.Payments;
+      return res.Payments;
 
+    })
   }
 });
-
-
