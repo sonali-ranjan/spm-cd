@@ -4,12 +4,12 @@ let userReadServicePromise = null;
 let userReadServiceEndpoint = { url: null };
 
 
-(async function () {
+// (async function () {
     
-    // Connect to external S/4HC SOAP service
-   userReadServicePromise = getSoapService();
+//     // Connect to external S/4HC SOAP service
+//     userReadServicePromise = getSoapService();
 
-})();
+// })();
 
 /*** HANDLERS ***/
 
@@ -71,13 +71,10 @@ async function readPayment(req) {
         //console.log(resp)
         // const payments = [];
        
-
         return resp; //resp[0].T_MESSAGE_AUFB.item[0].TEXT;
     } catch (err) {
         req.error(err.code, err.message);
     }
 }
 
-module.exports = {
-    readPayment
-}
+module.exports = { readPayment }
