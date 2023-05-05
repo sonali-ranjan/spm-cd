@@ -1,0 +1,11 @@
+id;MappingType;BTPAttribute;Source;Target;SourceDataType;CDObject;DataType;Length;DataConvRequired;ShortDesc
+1;CD_Payment;payee;payeeld;GPART;string;GPART;Char;10;NO;BusinessPartner Number
+2;CD_Payment;positionName;name;VTREF;string;VTREF;Char;20;NO;Reference Specifications from Contract
+3;CD_Payment;X;"";PSNGL;"";PSNGL;Char;1;"";Indicator: One-Time Payment
+4;CD_Payment;Amount;value;AMOUNT_TOTAL;Decimal;AMOUNT_TOTAL;Char;16;"";Amount in transaction currency with +/- sign (batch input)
+5;CD_Payment;Currency;unitTypeName;CURR;string;CURR;Char;5;NO;Currency Key
+6;CD_Payment;BusTxn;PaymentSeq;GSFNR;Long;GSFNR;Char;16;NO;Business Transaction Number
+7;CD_Payment;Tenant;1270;string
+8;CD_Payment;DueDate;endDate;FAEDN;Date;FAEDN;Char;8;YES;Due Date for Net Payment
+9;CD_Payment;Tenant;1270;AWSYS;string;AWSYS;Char;10;"";Logical system of source document
+10;CD_Payment;RefKey;PaymentSeq;AWKEY;Long;AWKEY;Char;20;NO;Reference Key
