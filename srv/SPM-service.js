@@ -9,7 +9,7 @@ module.exports = cds.service.impl(function () {
     const CommissionsApi = await cds.connect.to("CommissionsApi");
     return CommissionsApi.tx(req).run(req.query);
 
-  });
+  }); 
   // const { FinalPayments } = this.entities;
 
   // this.on("READ", FinalPayments, async (req) => {
@@ -46,11 +46,11 @@ module.exports = cds.service.impl(function () {
   async function readSAPCommissionPayments(req) {
     const CommissionsOdataApi = await cds.connect.to("CommissionsOdataApi");
 
-    let res = await CommissionsOdataApi.read('Payments').limit(1)
+    let res = await CommissionsOdataApi.read('Payments')//.limit(1)
 
     res.forEach(element => {
 
-      console.clear();
+      // console.clear();
       console.log("Data for Payment to CD\n");
       console.log("Payment Seq      : ", element.PaymentSeq);
       console.log("Earning Group ID : ", element.EarningGroupId);

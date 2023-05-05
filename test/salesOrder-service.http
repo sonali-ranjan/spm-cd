@@ -16,7 +16,7 @@ POST http://localhost:4004/spm/FinalPayments
 Content-Type: application/json
 
 {
- "PaymentSeq"   : 102,
+ "PaymentSeq"   : 103,
         "EarningGroup" : "Bonus",
         "EarningCode"  : "Bonus",
         "Currency"    : "USD",

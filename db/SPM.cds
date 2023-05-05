@@ -17,7 +17,7 @@ entity unitType {
 }
 
 entity Payments {
-    key PaymentSeq     : Integer;
+    key PaymentSeq     : Integer64;
         // name           : String(111);
         EarningGroupId : String(20);
         EarningCodeId  : String(20);
@@ -30,7 +30,7 @@ entity Value {
 }
 
 entity FinalPayments {
-    key PaymentSeq   : Integer;
+    key PaymentSeq   : Integer64;
         EarningGroup : String(20);
         EarningCode  : String(20);
         Currency     : String(10);
