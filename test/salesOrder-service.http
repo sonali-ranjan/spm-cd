@@ -8,6 +8,10 @@ GET http://localhost:4004/spm/sendPayment()
 
 ###
 
+GET http://localhost:4004/spm/getMapping()
+
+###
+
 GET http://localhost:4004/spm/FinalPayments
 
 ###

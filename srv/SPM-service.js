@@ -11,7 +11,7 @@ module.exports = cds.service.impl(function () {
     const CommissionsApi = await cds.connect.to("CommissionsApi");
     return CommissionsApi.tx(req).run(req.query);
 
-  }); 
+  });
   // const { FinalPayments } = this.entities;
 
   // this.on("READ", FinalPayments, async (req) => {
@@ -81,41 +81,45 @@ module.exports = cds.service.impl(function () {
       //const { Pay } = cds.entities ('srv.Cd_Local_MapService') --- not connected to datasource
       // const srv = await cds.connect.to("db/data/srv.Cd_Local_MapService-Cd_Local_Mapping.csv");
 
-      let CustomizingData = {SELECT:{
-        from: {ref:["srv.Cd_Local_MapService"]},
-        columns: [
-          {ref:["id"]},
-          {ref:["TenantId"]},
-          {ref:["CommissionEG"]},
-          {ref:["CommissionEC"]},
-          {ref:["MainTransaction"]},
-          {ref:["SubTransaction"]},
-          {ref:["DocumentType"]},
-          {ref:["CompanyCode"]},
-        ],
-        where: [{ref:["CommissionEG"]}, "=", {val: "Commission"},
-      {ref:["CommissionEC"]}, "=", {val: "Auto Premium Commission"}]
-      }};
+      let CustomizingData = {
+        SELECT: {
+          from: { ref: ["srv.Cd_Local_MapService"] },
+          columns: [
+            { ref: ["id"] },
+            { ref: ["TenantId"] },
+            { ref: ["CommissionEG"] },
+            { ref: ["CommissionEC"] },
+            { ref: ["MainTransaction"] },
+            { ref: ["SubTransaction"] },
+            { ref: ["DocumentType"] },
+            { ref: ["CompanyCode"] },
+          ],
+          where: [{ ref: ["CommissionEG"] }, "=", { val: "Commission" },
+          { ref: ["CommissionEC"] }, "=", { val: "Auto Premium Commission" }]
+        }
+      };
       console.log("Customizing data: ", CustomizingData);
 
       // SELECT.from ('srv.Cd_Local_MapService', a => {a.id, a.TenantId, a.CommissionEG, a.CommissionEC, a.MainTransaction, a.subTransaction, a.DocumentType, a.CompanyCode}). where('CommissionEG = Commission')
-      
 
-      let CustData = {SELECT:{
-        from: {ref: ["srv.Cd_bp_Mapservice"]},
-        columns: [
-          {ref:["id"]},
-          {ref:["bp"]},
-          {ref:["partid"]},
-          {ref:['partval']}
-        ]
-      }}
+
+      let CustData = {
+        SELECT: {
+          from: { ref: ["srv.Cd_bp_Mapservice"] },
+          columns: [
+            { ref: ["id"] },
+            { ref: ["bp"] },
+            { ref: ["partid"] },
+            { ref: ['partval'] }
+          ]
+        }
+      }
       console.log(CustData);
 
       // let CustData = SELECT from db.srv.Cd_Local_MapService-Cd_Local_Mapping { tenantId};
 
-//       let pay = await SELECT.from(srv.Cd_Local_MapService);
-// console.log(pay);
+      //       let pay = await SELECT.from(srv.Cd_Local_MapService);
+      // console.log(pay);
 
       // let CQN = {INSERT:{
       //   into: { ref: ['srv.Cd_Local_MapService'] },
@@ -128,4 +132,27 @@ module.exports = cds.service.impl(function () {
 
     })
   }
+
+  this.on("getMapping", async (req) => {
+    const SPMService = await cds.connect.to("srv.Cd_Local_MapService");
+    let CustData = {
+      SELECT: {
+        from: { ref: ["srv.Cd_bp_Mapservice"] },
+        columns: [
+          { ref: ["id"] },
+          { ref: ["TenantId"] },
+          { ref: ["CommissionEG"] },
+          { ref: ['CommissionEC'] }
+        ]
+      }
+    }
+
+    // return await SPMService.read('Cd_Local_Mapping')  // Works 
+    // return await SPMService.read('Cd_Local_Mapping').limit(1) // Works
+    // return await SPMService.read('Cd_Local_Mapping').columns("id", "TenantId", "CommissionEG", 'CommissionEC') // Works
+
+    const { Cd_Local_Mapping } = SPMService.entities
+
+    return await SELECT.from(Cd_Local_Mapping)
+  })
 });
