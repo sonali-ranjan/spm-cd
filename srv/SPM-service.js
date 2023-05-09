@@ -1,4 +1,6 @@
+// const { tenantId } = require("@sap-cloud-sdk/connectivity/internal");
 const cds = require("@sap/cds");
+// const cd = require("./payments-service")
 
 module.exports = cds.service.impl(function () {
   const { SalesOrders } = this.entities;
@@ -48,7 +50,7 @@ module.exports = cds.service.impl(function () {
 
     let res = await CommissionsOdataApi.read('Payments')//.limit(1)
 
-    res.forEach(element => {
+    res.forEach(async element => {
 
       // console.clear();
       console.log("Data for Payment to CD\n");
@@ -62,19 +64,65 @@ module.exports = cds.service.impl(function () {
       console.log("Position Name    : ", element.Position.Name);
       console.log("Position Seq     : ", element.Position.RuleElementOwnerSeq);
 
-      cds.run(INSERT.into(FinalPayments).entries(
-        {
-          PaymentSeq: element.PaymentSeq,
-          EarningGroup: element.EarningGroupId,
-          EarningCode: element.EarningCodeId,
-          Currency: element.Value.UnitType,
-          Amount: element.Value.Value,
-          PayeeSeq: element.Payee.PayeeSeq,
-          PostingDate: element.Period.EndDate,
-          PositionSeq: element.Position.RuleElementOwnerSeq,
-          Tenant: "1270"
-        }
-      ));
+      // cds.run(INSERT.into(FinalPayments).entries(
+      //   {
+      //     PaymentSeq: element.PaymentSeq,
+      //     EarningGroup: element.EarningGroupId,
+      //     EarningCode: element.EarningCodeId,
+      //     Currency: element.Value.UnitType,
+      //     Amount: element.Value.Value,
+      //     PayeeSeq: element.Payee.PayeeSeq,
+      //     PostingDate: element.Period.EndDate,
+      //     PositionSeq: element.Position.RuleElementOwnerSeq,
+      //     Tenant: "1270"
+      //   }
+      // ));
+
+      //const { Pay } = cds.entities ('srv.Cd_Local_MapService') --- not connected to datasource
+      // const srv = await cds.connect.to("db/data/srv.Cd_Local_MapService-Cd_Local_Mapping.csv");
+
+      let CustomizingData = {SELECT:{
+        from: {ref:["srv.Cd_Local_MapService"]},
+        columns: [
+          {ref:["id"]},
+          {ref:["TenantId"]},
+          {ref:["CommissionEG"]},
+          {ref:["CommissionEC"]},
+          {ref:["MainTransaction"]},
+          {ref:["SubTransaction"]},
+          {ref:["DocumentType"]},
+          {ref:["CompanyCode"]},
+        ],
+        where: [{ref:["CommissionEG"]}, "=", {val: "Commission"},
+      {ref:["CommissionEC"]}, "=", {val: "Auto Premium Commission"}]
+      }};
+      console.log("Customizing data: ", CustomizingData);
+
+      // SELECT.from ('srv.Cd_Local_MapService', a => {a.id, a.TenantId, a.CommissionEG, a.CommissionEC, a.MainTransaction, a.subTransaction, a.DocumentType, a.CompanyCode}). where('CommissionEG = Commission')
+      
+
+      let CustData = {SELECT:{
+        from: {ref: ["srv.Cd_bp_Mapservice"]},
+        columns: [
+          {ref:["id"]},
+          {ref:["bp"]},
+          {ref:["partid"]},
+          {ref:['partval']}
+        ]
+      }}
+      console.log(CustData);
+
+      // let CustData = SELECT from db.srv.Cd_Local_MapService-Cd_Local_Mapping { tenantId};
+
+//       let pay = await SELECT.from(srv.Cd_Local_MapService);
+// console.log(pay);
+
+      // let CQN = {INSERT:{
+      //   into: { ref: ['srv.Cd_Local_MapService'] },
+      //   columns: [ 'id', 'TenantId', 'CommissionEG', 'CommissionEC', 'MainTransaction', 'SubTransaction', 'DocumentType', 'CompanyCode' ],
+      //   values: [ 201, 1270, 'Bonus', 'Bonus', 101, 12, 765, 'SR001' ]
+      // }}
+      // cds.run(CQN);
 
       return res.Payments;
 
